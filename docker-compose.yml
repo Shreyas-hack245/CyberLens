@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://cyberlens:cyberlens@db:5432/cyberlens
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cyberlens
+      POSTGRES_PASSWORD: cyberlens
+      POSTGRES_DB: cyberlens
+    ports:
+      - "5432:5432"
+    volumes:
+      - cyberlens_db:/var/lib/postgresql/data
+
+volumes:
+  cyberlens_db:
